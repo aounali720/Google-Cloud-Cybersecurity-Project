@@ -1,100 +1,25 @@
-# Google Cloud Data Breach Incident Response Lab
+# Google Cloud security incident lab
 
-## Overview
-This project demonstrates how to respond to and remediate a simulated data breach in a Google Cloud environment. The lab focuses on identifying vulnerabilities and applying security best practices to secure cloud resources.
+A Google Cloud training scenario involving an exposed storage bucket, broad firewall rules and an insecure VM configuration. I used Security Command Center and the Google Cloud console to review the findings and work through the recommended remediation steps.
 
-The scenario involved vulnerabilities in:
-
-- Compute Engine Virtual Machine
-- Cloud Storage Bucket
-- Firewall Rules
-
-These vulnerabilities were identified using **Google Cloud Security Command Center** and remediated to improve compliance with **PCI DSS 3.2.1 security standards**.
-
----
-
-## Skills Demonstrated
-
-- Cloud Security Incident Response
-- Vulnerability Identification
-- Google Cloud Security Command Center
-- Firewall Hardening
-- Secure VM Deployment
-- Cloud Storage Access Control
-- PCI DSS Compliance Remediation
-
----
+This was a **simulated incident**, not a confirmed breach of an organization.
 
 ## Environment
 
-- Platform: Google Cloud Platform (GCP)
-- Services Used:
-  - Security Command Center
-  - Compute Engine
-  - Cloud Storage
-  - VPC Firewall Rules
-  - Cloud Shell
+- Google Cloud Security Command Center
+- Compute Engine and Cloud Storage
+- VPC firewall rules and Cloud Shell
 
----
+## Findings and changes
 
-# Incident Scenario
+| Area | What I found | What I changed |
+| --- | --- | --- |
+| Compute Engine | VM had a public address, disabled Secure Boot, default service account and broad API access | Stopped `cc-app-01`, created `cc-app-02` from a snapshot, and removed the old instance |
+| Cloud Storage | Public access through `allUsers` and ACL configuration | Removed public permissions and switched to uniform bucket-level access |
+| VPC firewall | Open SSH/RDP paths and disabled firewall logging | Added a more restrictive rule (`limit-ports`) and limited administrative network access |
 
-A simulated data breach was detected in the cloud environment. Several misconfigurations were identified that could allow unauthorized access.
+The lab included checking relevant PCI DSS 3.2.1 requirements. Completing the exercise does **not** establish PCI DSS compliance, nor does it prove that every possible cloud risk was removed.
 
-The affected resources included:
+## Notes
 
-- A vulnerable VM instance
-- A publicly accessible storage bucket
-- Overly permissive firewall rules
-
----
-
-# Remediation Steps
-
-## 1. Compute Engine Vulnerabilities
-
-Issues identified:
-
-- Public IP assigned to VM
-- Secure boot disabled
-- Default service account used
-- Full API access enabled
-- Malware communication detected
-
-Remediation:
-
-- Stopped the vulnerable VM `cc-app-01`
-- Created a secure VM from a snapshot
-- Deployed a new instance `cc-app-02`
-- Deleted the compromised VM
-
----
-
-## 2. Cloud Storage Bucket Misconfiguration
-
-Issues identified:
-
-- Public bucket access
-- Public ACL permissions
-- Bucket policy only disabled
-
-Remediation:
-
-- Switched bucket access control to **Uniform**
-- Removed `allUsers` permissions
-- Enforced bucket-level IAM policies
-
----
-
-## 3. Firewall Security Issues
-
-Issues identified:
-
-- Open SSH access
-- Open RDP access
-- Firewall logging disabled
-
-Remediation:
-
-- Created restricted firewall rule `limit-ports`
-- Allowed SSH only from:
+The accompanying [lab report (PDF)](Google%20cloud%20secuirity%20project.pdf) has the original walkthrough and screenshots. Check current Google Cloud guidance before applying similar configuration changes in another environment.
